@@ -1,38 +1,37 @@
-name: Build Android APK
+name: Android Build
 
 on:
-  workflow_dispatch:
   push:
-    branches: [main]
-
-permissions:
-  contents: read
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:   # ম্যানুয়ালি চালানোর জন্য
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source
+      - name: কোড চেকআউট
         uses: actions/checkout@v4
 
-      - name: Set up JDK
+      - name: JDK সেটআপ
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: 17
 
-      - name: Set up Gradle
+      - name: Gradle ক্যাশ
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Build Debug APK
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+      - name: gradlew এক্সিকিউটেবল করুন
+        run: chmod +x gradlew
 
-      - name: Upload APK
+      - name: Debug APK বিল্ড
+        run: ./gradlew assembleDebug
+
+      - name: APK আপলোড
         uses: actions/upload-artifact@v4
         with:
-          name: Web-Messenger-native-debug-APK
-          path: app/build/outputs/apk/debug/*.apk
-          if-no-files-found: error
+          name: app-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
