@@ -26,18 +26,20 @@ jobs:
       - name: SDK প্যাকেজ ইনস্টল
         run: |
           yes | sdkmanager --licenses > /dev/null || true
-          sdkmanager "platforms;android-34" "platforms;android-35" "build-tools;34.0.0"
+          sdkmanager "platforms;android-34" "build-tools;34.0.0"
 
       - name: Gradle সেটআপ
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: 8.13
+          gradle-version: 8.9
 
       - name: Debug APK বিল্ড
         shell: bash
         env:
           GRADLE_OPTS: -Dorg.gradle.jvmargs=-Xmx4g
-        run: gradle assembleDebug --console=plain --no-daemon 2>&1 | tee build.log
+        run: |
+          set -o pipefail
+          gradle assembleDebug --console=plain --no-daemon 2>&1 | tee build.log
 
       - name: APK আপলোড
         uses: actions/upload-artifact@v4
