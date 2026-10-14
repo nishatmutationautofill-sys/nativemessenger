@@ -85,8 +85,12 @@ fun ChatScreen(c: ChatClient) {
     val list = rememberLazyListState()
     LaunchedEffect(msgs.size) { if (msgs.isNotEmpty()) list.animateScrollToItem(msgs.lastIndex) }
     BackHandler(sel != null) { sel = null }
-    val green = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF075E54), titleContentColor = Color.White,
-        navigationIconContentColor = Color.White, actionContentColor = Color.White)
+  val green = TopAppBarDefaults.topAppBarColors(
+    containerColor = Color(0xFF075E54),
+    titleContentColor = Color.White,
+    navigationIconContentColor = Color.White,
+    actionIconContentColor = Color.White
+)
 
     Scaffold(modifier = Modifier.imePadding(), topBar = {
         val s = sel
